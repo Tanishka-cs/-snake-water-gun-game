@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Snake Water Gun Game</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #309898 0%, #3A0519 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .game-container {
+      background: #BE5B50;
+      padding: 30px 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+      text-align: center;
+      width: 320px;
+    }
+
+    h1 {
+      color: white;
+      margin-bottom: 15px;
+    }
+
+    p.instructions {
+      font-style: italic;
+      margin-bottom: 20px;
+      color: #f2f2f2;
+    }
+
+    .choices {
+      margin-bottom: 20px;
+    }
+
+    .btn-choice {
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      margin: 8px;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .btn-choice[data-choice="s"] {
+      background-color: #FF9F00;
+    }
+    .btn-choice[data-choice="s"]:hover {
+      background-color: #e68a00;
+    }
+
+    .btn-choice[data-choice="w"] {
+      background-color: #F4631E;
+    }
+    .btn-choice[data-choice="w"]:hover {
+      background-color: #d65518;
+    }
+
+    .btn-choice[data-choice="g"] {
+      background-color: #CB0404;
+    }
+    .btn-choice[data-choice="g"]:hover {
+      background-color: #a00303;
+    }
+
+    .result {
+      font-weight: bold;
+      font-size: 1.2rem;
+      margin-top: 15px;
+      min-height: 60px;
+      color: white;
+    }
+
+    .result span {
+      display: block;
+      margin-top: 8px;
+    }
+
+    #play-again {
+      background-color: #3A0519;
+      color: white;
+      padding: 10px 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.3s;
+    }
+
+    #play-again:hover {
+      background-color: #2a0312;
+    }
+
+    .footer {
+      margin-top: 25px;
+      font-size: 0.9rem;
+      color: #f0e0dc;
+    }
+  </style>
+</head>
+<body>
+
+<div class="game-container">
+  <h1>Snake Water Gun</h1>
+  <p class="instructions">Choose your weapon:</p>
+
+  <div class="choices">
+    <button class="btn-choice" data-choice="s">🐍 Snake (s)</button>
+    <button class="btn-choice" data-choice="w">💧 Water (w)</button>
+    <button class="btn-choice" data-choice="g">🔫 Gun (g)</button>
+  </div>
+
+  <div class="result" id="result"></div>
+  <button id="play-again" style="display:none; margin-top: 20px;">Play Again</button>
+
+  <div class="footer">Presented by Tanishka Yadav</div>
+</div>
+
+<script>
+  const buttons = document.querySelectorAll('.btn-choice');
+  const resultDiv = document.getElementById('result');
+  const playAgainBtn = document.getElementById('play-again');
+
+  const choiceDict = { s: -1, w: 0, g: 1 };
+  const reverseDict = { "-1": "Snake", "0": "Water", "1": "Gun" };
+
+  function getComputerChoice() {
+    const choices = [-1, 0, 1];
+    const randomIndex = Math.floor(Math.random() * choices.length);
+    return choices[randomIndex];
+  }
+
+  function determineWinner(userChoice, compChoice) {
+    if (userChoice === compChoice) {
+      return "Draw! Both chose " + reverseDict[userChoice];
+    }
+
+    if (
+      (compChoice === -1 && userChoice === 0) ||
+      (compChoice === 0 && userChoice === 1) ||
+      (compChoice === 1 && userChoice === -1)
+    ) {
+      return `You Lose! ${reverseDict[compChoice]} beats ${reverseDict[userChoice]}`;
+    } else {
+      return `You Win! ${reverseDict[userChoice]} beats ${reverseDict[compChoice]}`;
+    }
+  }
+
+  function playGame(userChoiceChar) {
+    const userChoice = choiceDict[userChoiceChar];
+    const compChoice = getComputerChoice();
+
+    resultDiv.innerHTML = `
+      Your choice: <strong>${reverseDict[userChoice]}</strong><br>
+      Computer's choice: <strong>${reverseDict[compChoice]}</strong><br><br>
+      ${determineWinner(userChoice, compChoice)}
+    `;
+
+    buttons.forEach(btn => btn.disabled = true);
+    playAgainBtn.style.display = 'inline-block';
+  }
+
+  buttons.forEach(button => {
+    button.addEventListener('click', () => {
+      playGame(button.getAttribute('data-choice'));
+    });
+  });
+
+  playAgainBtn.addEventListener('click', () => {
+    resultDiv.innerHTML = '';
+    buttons.forEach(btn => btn.disabled = false);
+    playAgainBtn.style.display = 'none';
+  });
+</script>
+
+</body>
+</html>
