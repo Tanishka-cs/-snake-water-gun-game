@@ -48,7 +48,7 @@ This is a simple, interactive web-based implementation of the classic "Snake, Wa
 
 If you wish to run this project on your local machine:
 
-1.  **Download the `index.html` file** (and any other associated files like `style.css` or `script.js` if they were separate). In this case, all the code is within the `index.html` file itself.
+1.  **Download the `index.html` file**.
 2.  **Open the file:** Open the `index.html` file directly in your preferred web browser.
 
 ## What I Learned / Key Takeaways
